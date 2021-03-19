@@ -103,15 +103,13 @@ pipeline {
                     remote.user = "t1admin"
                     remote.allowAnyHosts = true
                 }
-                node {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
-                        remote.identityFile = identity
-                        stage("SSH Steps Rocks!") {
-                            sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
-                            sshCommand remote: remote, command: 'ls -la'
-                        }
-                    }
+
+                withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
+                    remote.identityFile = identity
+                    sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
+                    sshCommand remote: remote, command: 'ls -la'
                 }
+
             }
         }
     }
