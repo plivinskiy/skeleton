@@ -21,7 +21,7 @@ pipeline {
 
         credentials(name: 'JK_GIT_CREDENTIAL', description: '# GIT Repository Credentials', defaultValue: 'ec95ffe3-1911-452d-8366-65f22a18a6ca', credentialType: "Any", required: true )
 
-        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'JK_GIT_REFERENCE', type: 'PT_BRANCH'
+        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', description: '# GIT Branch to build the project', name: 'JK_GIT_REFERENCE', type: 'PT_BRANCH'
     }
 
     stages {
