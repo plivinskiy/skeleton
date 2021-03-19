@@ -98,7 +98,7 @@ pipeline {
                     remote.allowAnyHosts = true
 
                     node {
-                        withCredentials([sshUserPrivateKey(credentialsId: '${env.JK_SSH_CREDENTIAL}', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+                        withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
                             remote.user = userName
                             remote.identityFile = identity
                             stage("SSH Steps Rocks!") {
