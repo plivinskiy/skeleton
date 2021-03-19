@@ -78,7 +78,7 @@ pipeline {
                                 sshTransfer(
                                     cleanRemote: false,
                                     excludes: '',
-                                    execCommand: 'tar -zxvf build/artefact.tar.gz -C ../test',
+                                    execCommand: 'tar -zxvf build/build/artefact.tar.gz -C test && rm -rf build/build/artefact.tar.gz',
                                     execTimeout: 120000,
                                     flatten: false,
                                     makeEmptyDirs: false,
