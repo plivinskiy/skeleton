@@ -10,16 +10,10 @@ pipeline {
     }
 
     parameters {
-        choice(
-            name: 'JK_GIT_REFERENCE_TEST',
-            description: '# Git Branch or Tag to checkout',
-            choices: [
-                'branch',
-                'tag'
-            ]
-        )
 
         credentials(name: 'JK_GIT_CREDENTIAL', description: '# GIT Repository Credentials', defaultValue: 'ec95ffe3-1911-452d-8366-65f22a18a6ca', credentialType: "Any", required: true )
+
+        credentials(name: 'JK_SSH_CREDENTIAL', description: '# GIT Repository Credentials', defaultValue: 'JenkinsPrivateKey', credentialType: "Any", required: true )
 
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', description: '# GIT Branch to build the project', name: 'JK_GIT_REFERENCE', type: 'PT_BRANCH'
     }
@@ -104,7 +98,7 @@ pipeline {
                     remote.allowAnyHosts = true
 
                     node {
-                        withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
+                        withCredentials([sshUserPrivateKey(credentialsId: '${env.JK_SSH_CREDENTIAL}', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
                             remote.identityFile = identity
                             stage("SSH Steps Rocks!") {
                                 sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
