@@ -76,13 +76,13 @@ pipeline {
                                 sshTransfer(
                                     cleanRemote: false,
                                     excludes: '',
-                                    execCommand: 'tar -zxvf artefact.tar.gz -C ./test',
+                                    execCommand: 'tar -zxvf build/artefact.tar.gz -C ../test',
                                     execTimeout: 120000,
                                     flatten: false,
                                     makeEmptyDirs: false,
                                     noDefaultExcludes: false,
                                     patternSeparator: '[, ]+',
-                                    remoteDirectory: 'artefact.tar.gz',
+                                    remoteDirectory: 'build',
                                     remoteDirectorySDF: false,
                                     removePrefix: '',
                                     sourceFiles: '/var/jenkins_home/workspace/pimcore-skeleton@2/build/output.tar.gz'
