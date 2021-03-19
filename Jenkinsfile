@@ -50,7 +50,7 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: "refs/heads/${env.JK_GIT_REFERENCE}"]],
-                    userRemoteConfigs: [[name: 'source', credentialsId:"559c13f8-1f51-4e26-ab45-5a71eba00ef3", url: "https://github.com/plivinskiy/skeleton.git"]]
+                    userRemoteConfigs: [[name: 'source', credentialsId:"${env.JK_GIT_CREDENTIAL}", url: "https://github.com/plivinskiy/skeleton.git"]]
                 ])
 
                 sh 'composer install --optimize-autoloader --no-interaction'
