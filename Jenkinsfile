@@ -67,6 +67,8 @@ pipeline {
 
                 sh "ls -la"
 
+               copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful(), target: 'build'
+
                sshPublisher(
                 publishers:
                     [
