@@ -78,7 +78,7 @@ pipeline {
                                 sshTransfer(
                                     cleanRemote: false,
                                     excludes: '',
-                                    execCommand: 'mkdir test && tar -zxvf build/build/output.tar.gz -C ./test && rm -rf build/build/output.tar.gz',
+                                    execCommand: 'rm -rf test && mkdir test && tar -zxvf build/build/output.tar.gz -C ./test && rm -rf build/build/output.tar.gz',
                                     execTimeout: 120000,
                                     flatten: false,
                                     makeEmptyDirs: false,
