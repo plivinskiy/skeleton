@@ -82,7 +82,7 @@ pipeline {
                                     makeEmptyDirs: false,
                                     noDefaultExcludes: false,
                                     patternSeparator: '[, ]+',
-                                    remoteDirectory: 'composer.json',
+                                    remoteDirectory: 'build',
                                     remoteDirectorySDF: false,
                                     removePrefix: '',
                                     sourceFiles: 'composer.json'
