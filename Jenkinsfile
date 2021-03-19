@@ -68,8 +68,6 @@ pipeline {
 
                copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful()
 
-               sh "ls -la"
-
                sshPublisher(
                 publishers:
                     [
@@ -79,7 +77,7 @@ pipeline {
                                 sshTransfer(
                                     cleanRemote: false,
                                     excludes: '',
-                                    execCommand: 'rm -rf test && mkdir test && tar -zxvf build/build/output.tar.gz -C ./test && rm -rf build/build/output.tar.gz',
+                                    execCommand: 'stat build/output.tar.gz',
                                     execTimeout: 120000,
                                     flatten: false,
                                     makeEmptyDirs: false,
@@ -87,7 +85,7 @@ pipeline {
                                     patternSeparator: '[, ]+',
                                     remoteDirectory: 'build',
                                     remoteDirectorySDF: false,
-                                    removePrefix: '',
+                                    removePrefix: 'build/',
                                     sourceFiles: 'build/output.tar.gz'
                                 )
                             ],
