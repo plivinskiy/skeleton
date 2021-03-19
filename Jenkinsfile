@@ -76,16 +76,16 @@ pipeline {
                                 sshTransfer(
                                     cleanRemote: false,
                                     excludes: '',
-                                    execCommand: 'tar -zxvf artefact.tar.gz -C ./test',
+                                    execCommand: 'ls -la',
                                     execTimeout: 120000,
                                     flatten: false,
                                     makeEmptyDirs: false,
                                     noDefaultExcludes: false,
                                     patternSeparator: '[, ]+',
-                                    remoteDirectory: 'artefact.tar.gz',
+                                    remoteDirectory: 'composer.json',
                                     remoteDirectorySDF: false,
                                     removePrefix: '',
-                                    sourceFiles: 'build/output.tar.gz'
+                                    sourceFiles: 'composer.json'
                                 )
                             ],
                             usePromotionTimestamp: false,
