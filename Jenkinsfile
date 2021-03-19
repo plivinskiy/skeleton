@@ -96,12 +96,13 @@ pipeline {
 //                     ]
 //                 )
 
-                def remote = [:]
-                remote.name = "Deploy Destination"
-                remote.host = "62.146.146.113"
-                remote.user = "t1admin"
-                remote.allowAnyHosts = true
-
+                script {
+                    def remote = [:]
+                    remote.name = "Deploy Destination"
+                    remote.host = "62.146.146.113"
+                    remote.user = "t1admin"
+                    remote.allowAnyHosts = true
+                }
                 node {
                     withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
                         remote.identityFile = identity
