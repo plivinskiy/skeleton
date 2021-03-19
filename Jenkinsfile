@@ -11,16 +11,17 @@ pipeline {
 
     parameters {
         choice(
-            name: 'reference_type',
+            name: 'JK_GIT_REFERENCE_TEST',
+            description: '# Git Branch or Tag to checkout',
             choices: [
                 'branch',
                 'tag'
             ]
         )
-        string(
-            name: 'reference',
-            defaultValue: 'v1.3.0-5.8.0'
-        )
+
+        credentials(name: 'JK_GIT_CREDENTIAL', description: '# GIT Repository Credentials', defaultValue: 'ec95ffe3-1911-452d-8366-65f22a18a6ca', credentialType: "Any", required: true )
+
+        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'JK_GIT_REFERENCE', type: 'PT_BRANCH'
     }
 
     stages {
@@ -37,18 +38,18 @@ pipeline {
             steps {
 
                 script {
-                    if ( "${env.reference_type}" == 'branch' ) {
+                    if ( "${env.JK_GIT_REFERENCE}" == 'branch' ) {
                         env.build_from = "refs/heads/${env.reference}"
                     }
 
-                    else if ( "${env.reference_type}" == 'tag' ) {
+                    else if ( "${env.JK_GIT_REFERENCE}" == 'tag' ) {
                         env.build_from = "refs/tags/${env.reference}"
                     }
                 }
 
                 checkout([
                     $class: 'GitSCM',
-                    branches: [[name: "${env.build_from}"]],
+                    branches: [[name: "refs/heads/${env.JK_GIT_REFERENCE}"]],
                     userRemoteConfigs: [[name: 'source', credentialsId:"559c13f8-1f51-4e26-ab45-5a71eba00ef3", url: "https://github.com/plivinskiy/skeleton.git"]]
                 ])
 
