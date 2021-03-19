@@ -63,11 +63,11 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh "pwd"
-
-                sh "ls -la"
+               sh "pwd"
 
                copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful(), target: 'build'
+
+               sh "ls -la"
 
                sshPublisher(
                 publishers:
