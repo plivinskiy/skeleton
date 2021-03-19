@@ -105,7 +105,9 @@ pipeline {
                 }
 
                 withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
-                    remote.identityFile = identity
+                    script {
+                        remote.identityFile = identity
+                    }
                     sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
                     sshCommand remote: remote, command: 'ls -la'
                 }
