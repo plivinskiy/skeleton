@@ -68,33 +68,49 @@ pipeline {
 
                copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful()
 
-               sshPublisher(
-                publishers:
-                    [
-                        sshPublisherDesc(
-                            configName: 'Tagwork-K1',
-                            transfers: [
-                                sshTransfer(
-                                    cleanRemote: false,
-                                    excludes: '',
-                                    execCommand: 'stat build/output.tar.gz',
-                                    execTimeout: 120000,
-                                    flatten: false,
-                                    makeEmptyDirs: false,
-                                    noDefaultExcludes: false,
-                                    patternSeparator: '[, ]+',
-                                    remoteDirectory: 'build',
-                                    remoteDirectorySDF: false,
-                                    removePrefix: 'build/',
-                                    sourceFiles: 'build/output.tar.gz'
-                                )
-                            ],
-                            usePromotionTimestamp: false,
-                            useWorkspaceInPromotion: false,
-                            verbose: true
-                        )
-                    ]
-                )
+//                sshPublisher(
+//                 publishers:
+//                     [
+//                         sshPublisherDesc(
+//                             configName: 'Tagwork-K1',
+//                             transfers: [
+//                                 sshTransfer(
+//                                     cleanRemote: false,
+//                                     excludes: '',
+//                                     execCommand: 'stat build/output.tar.gz',
+//                                     execTimeout: 120000,
+//                                     flatten: false,
+//                                     makeEmptyDirs: false,
+//                                     noDefaultExcludes: false,
+//                                     patternSeparator: '[, ]+',
+//                                     remoteDirectory: 'build',
+//                                     remoteDirectorySDF: false,
+//                                     removePrefix: 'build/',
+//                                     sourceFiles: 'build/output.tar.gz'
+//                                 )
+//                             ],
+//                             usePromotionTimestamp: false,
+//                             useWorkspaceInPromotion: false,
+//                             verbose: true
+//                         )
+//                     ]
+//                 )
+
+                def remote = [:]
+                remote.name = "Deploy Destination"
+                remote.host = "62.146.146.113"
+                remote.user = "t1admin"
+                remote.allowAnyHosts = true
+
+                node {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
+                        remote.identityFile = identity
+                        stage("SSH Steps Rocks!") {
+                            sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
+                            sshCommand remote: remote, command: 'ls -la'
+                        }
+                    }
+                }
             }
         }
     }
