@@ -9,7 +9,19 @@
   "require": {
     "php": ">=7.1",
     "wikimedia/composer-merge-plugin": "^1.4",
-    "pimcore/pimcore": "~5.8.0"
+    "pimcore/pimcore": "5.8.4",
+    "ext-fileinfo": "*",
+    "dompdf/dompdf": "^0.8.3",
+    "php2wsdl/php2wsdl": "0.*",
+    "zendframework/zend-soap": "^2.7.0",
+    "ext-soap": "*",
+    "endroid/installer":"1.1.5",
+    "gregwar/captcha": "v1.1.7",
+    "gregwar/captcha-bundle": "v2.0.6",
+    "markbaker/complex": "^1.4",
+    "markbaker/matrix": "^1.1",
+    "phpoffice/phpspreadsheet": "1.7.0",
+    "symfony/monolog-bundle": "3.4.0"
   },
   "require-dev": {
     "cache/integration-tests": "^0.16.0",
