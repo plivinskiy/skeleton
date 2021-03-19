@@ -65,7 +65,7 @@ pipeline {
             steps {
                sh "pwd"
 
-               copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful(), target: 'build'
+               copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful()
 
                sh "ls -la"
 
@@ -87,7 +87,7 @@ pipeline {
                                     remoteDirectory: 'build',
                                     remoteDirectorySDF: false,
                                     removePrefix: '',
-                                    sourceFiles: '/var/jenkins_home/workspace/pimcore-skeleton@2/build/output.tar.gz'
+                                    sourceFiles: 'build/output.tar.gz'
                                 )
                             ],
                             usePromotionTimestamp: false,
