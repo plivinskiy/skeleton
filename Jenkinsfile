@@ -96,18 +96,16 @@ pipeline {
 //                     ]
 //                 )
 
-                script {
-                    def remote = [:]
-                    remote.name = "Deploy Destination"
-                    remote.host = "62.146.146.113"
-                    remote.user = "t1admin"
-                    remote.allowAnyHosts = true
-                }
-
                 withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
                     script {
+                        def remote = [:]
+                        remote.name = "Deploy Destination"
+                        remote.host = "62.146.146.113"
+                        remote.user = "t1admin"
+                        remote.allowAnyHosts = true
                         remote.identityFile = identity
                     }
+
                     sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
                     sshCommand remote: remote, command: 'ls -la'
                 }
