@@ -5,12 +5,6 @@ pipeline {
         }
     }
 
-    def remote = [:]
-    remote.name = "Deploy Destination"
-    remote.host = "62.146.146.113"
-    remote.user = "t1admin"
-    remote.allowAnyHosts = true
-
     options {
         copyArtifactPermission('MUCK-pimcore-test')
     }
@@ -102,14 +96,23 @@ pipeline {
 //                     ]
 //                 )
 
-                withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
-                    remote.identityFile = identity
-                    stage("SSH Steps Rocks!") {
-                        sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
-                        sshCommand remote: remote, command: 'ls -la'
+                script {
+                    def remote = [:]
+                    remote.name = "Deploy Destination"
+                    remote.host = "62.146.146.113"
+                    remote.user = "t1admin"
+                    remote.allowAnyHosts = true
+
+                    node {
+                        withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsPrivateKey', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: '')]) {
+                            remote.identityFile = identity
+                            stage("SSH Steps Rocks!") {
+                                sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
+                                sshCommand remote: remote, command: 'ls -la'
+                            }
+                        }
                     }
                 }
-
             }
         }
     }
