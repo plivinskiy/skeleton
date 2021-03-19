@@ -19,7 +19,7 @@ pipeline {
         )
         string(
             name: 'reference',
-            defaultValue: 'master'
+            defaultValue: 'v1.3.0-5.8.0'
         )
     }
 
@@ -49,7 +49,7 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: "${env.build_from}"]],
-                    userRemoteConfigs: [[name: 'source', credentialsId:"559c13f8-1f51-4e26-ab45-5a71eba00ef3", url: "https://git.tagwork-one.de/muenchen-klinik/pimcore.git"]]
+                    userRemoteConfigs: [[name: 'source', credentialsId:"559c13f8-1f51-4e26-ab45-5a71eba00ef3", url: "https://github.com/plivinskiy/skeleton.git"]]
                 ])
 
                 sh 'composer install --optimize-autoloader --no-interaction'
