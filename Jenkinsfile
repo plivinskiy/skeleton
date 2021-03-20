@@ -58,11 +58,12 @@ pipeline {
             }
         }
         stage('Testing') {
-            sh "echo 'run all tests'"
+            steps {
+                sh "echo 'run all tests'"
+            }
         }
         stage('Deploy') {
             steps {
-               sh "pwd"
 
                copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful()
 
