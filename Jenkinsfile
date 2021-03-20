@@ -76,10 +76,10 @@ pipeline {
                             remote.passphrase = passphrase
 
                             stage("SSH Steps Rocks!") {
-                                sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
-                                sshCommand remote: remote, command: 'ls -la'
-                                sshCommand remote: remote, command: 'mkdir test'
-                                sshCommand remote: remote, command: 'tar -zxvf build/output.tar.gz --directory test'
+                                sshPut remote: remote, from: 'build/output.tar.gz', into: '/var/www/pimcore/build/output.tar.gz'
+                                sshCommand remote: remote, command: 'ls -la /var/www/pimcore'
+                                sshCommand remote: remote, command: 'mkdir /var/www/pimcore/test'
+                                sshCommand remote: remote, command: 'tar -zxvf /var/www/pimcore/build/output.tar.gz --directory /var/www/pimcore/test'
                             }
                         }
                     }
