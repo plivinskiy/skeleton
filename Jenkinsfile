@@ -62,34 +62,6 @@ pipeline {
 
                copyArtifacts filter: 'build/output.tar.gz', fingerprintArtifacts: true, projectName: 'pimcore-skeleton', selector: lastSuccessful()
 
-//                sshPublisher(
-//                 publishers:
-//                     [
-//                         sshPublisherDesc(
-//                             configName: 'Tagwork-K1',
-//                             transfers: [
-//                                 sshTransfer(
-//                                     cleanRemote: false,
-//                                     excludes: '',
-//                                     execCommand: 'stat build/output.tar.gz',
-//                                     execTimeout: 120000,
-//                                     flatten: false,
-//                                     makeEmptyDirs: false,
-//                                     noDefaultExcludes: false,
-//                                     patternSeparator: '[, ]+',
-//                                     remoteDirectory: 'build',
-//                                     remoteDirectorySDF: false,
-//                                     removePrefix: 'build/',
-//                                     sourceFiles: 'build/output.tar.gz'
-//                                 )
-//                             ],
-//                             usePromotionTimestamp: false,
-//                             useWorkspaceInPromotion: false,
-//                             verbose: true
-//                         )
-//                     ]
-//                 )
-
                 script {
                     def remote = [:]
                     remote.name = "Deploy Destination"
@@ -98,13 +70,16 @@ pipeline {
                     remote.allowAnyHosts = true
 
                     node {
-                        withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+                        withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
                             remote.user = userName
                             remote.identityFile = identity
+                            remote.passphrase = passphrase
 
                             stage("SSH Steps Rocks!") {
                                 sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
                                 sshCommand remote: remote, command: 'ls -la'
+                                sshCommand remote: remote, command: 'mkdir test'
+                                sshCommand remote: remote, command: 'tar -zxvf build/output.tar.gz --directory test'
                             }
                         }
                     }
