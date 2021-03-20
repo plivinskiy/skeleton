@@ -102,10 +102,6 @@ pipeline {
                             remote.user = userName
                             remote.identityFile = identity
 
-                            sh "echo ${userName}"
-
-                            sh "echo ${identity}"
-
                             stage("SSH Steps Rocks!") {
                                 sshPut remote: remote, from: 'build/output.tar.gz', into: 'build/output.tar.gz'
                                 sshCommand remote: remote, command: 'ls -la'
