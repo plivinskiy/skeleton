@@ -86,7 +86,7 @@ pipeline {
                                 sshCommand remote: remote, command: 'ls -la /var/www/pimcore'
                                 sshCommand remote: remote, command: 'if [ -d "/var/www/pimcore/test" ]; then rm -Rf /var/www/pimcore/test; fi'
                                 sshCommand remote: remote, command: 'mkdir /var/www/pimcore/test'
-                                sshCommand remote: remote, command: 'tar -zxvf /var/www/pimcore/build/output.tar.gz --directory /var/www/pimcore/test'
+                                sshCommand remote: remote, command: 'tar -zxf /var/www/pimcore/build/output.tar.gz --directory /var/www/pimcore/test'
                             }
                         }
                     }
