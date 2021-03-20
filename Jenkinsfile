@@ -52,6 +52,7 @@ pipeline {
                 sh 'php bin/console cache:clear'
                 sh 'rm -rf .git/'
                 sh 'mkdir build'
+                sh 'rm -rf var/cache'
                 sh 'tar --exclude=build/output.tar.gz -zcf build/output.tar.gz .'
 
                 archiveArtifacts artifacts: 'build/output.tar.gz', followSymlinks: false, onlyIfSuccessful: true
