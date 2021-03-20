@@ -19,6 +19,7 @@ pipeline {
     }
 
     stages {
+
         stage('Build') {
             agent {
                 dockerfile {
@@ -56,6 +57,9 @@ pipeline {
                 archiveArtifacts artifacts: 'build/output.tar.gz', followSymlinks: false, onlyIfSuccessful: true
             }
         }
+        stage('Testing') {
+            sh "echo 'run all tests'"
+        }
         stage('Deploy') {
             steps {
                sh "pwd"
@@ -75,7 +79,7 @@ pipeline {
                             remote.identityFile = identity
                             remote.passphrase = passphrase
 
-                            stage("SSH Steps Rocks!") {
+                            stage("Remote Server") {
                                 sshPut remote: remote, from: 'build/output.tar.gz', into: '/var/www/pimcore/build/output.tar.gz'
                                 sshCommand remote: remote, command: 'ls -la /var/www/pimcore'
                                 sshCommand remote: remote, command: 'mkdir /var/www/pimcore/test'
