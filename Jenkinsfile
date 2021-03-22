@@ -28,7 +28,7 @@ pipeline {
 
     stages {
 
-        stage('Build') {
+        stage('Building') {
             agent {
                 dockerfile {
                     filename 'Dockerfile'
@@ -63,7 +63,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploying') {
             steps {
 
                copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: lastSuccessful()
@@ -97,7 +97,7 @@ pipeline {
             }
         }
 
-        stage('Switch to the Version'){
+        stage('Switching'){
             steps {
 
                 script {
