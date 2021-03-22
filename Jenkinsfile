@@ -65,11 +65,11 @@ pipeline {
                 script {
                     def remote = [:]
                     remote.name = "Deploy Destination"
-                    remote.host = "${env.JS_SSH_HOST}"
-                    remote.user = "${env.JS_SSH_USER}"
+                    remote.host = "${env.JK_SSH_HOST}"
+                    remote.user = "${env.JK_SSH_USER}"
                     remote.allowAnyHosts = true
 
-                    sh "credential: {$JK_SSH_CREDENTIAL} / {$JS_SSH_HOST} / {$JS_SSH_USER} / {$JK_REMOTE_DESTINATION} / ${env.JK_REMOTE_DESTINATION}"
+                    sh "credential: {$JK_SSH_CREDENTIAL} / {$JK_SSH_HOST} / {$JK_SSH_HOST} / {$JK_REMOTE_DESTINATION} / ${env.JK_REMOTE_DESTINATION}"
 
 
                     withCredentials([sshUserPrivateKey(credentialsId: "JenkinsPrivateKey", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
