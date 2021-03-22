@@ -76,7 +76,7 @@ pipeline {
 
                         stage("Copy to remote Artifacts Storage") {
                             sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/artifacts; fi"
-                            sshPut remote: remote, from: 'build/artifact-${env.BUILD_NUMBER}.tar.gz', into: "${env.JK_REMOTE_DESTINATION}/artifacts/artifact-${env.BUILD_NUMBER}.tar.gz"
+                            sshPut remote: remote, from: "build/artifact-${env.BUILD_NUMBER}.tar.gz", into: "${env.JK_REMOTE_DESTINATION}/artifacts/artifact-${env.BUILD_NUMBER}.tar.gz"
                             sshCommand remote: remote, command: "ls -la ${env.JK_REMOTE_DESTINATION}/artifacts"
                             sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release; fi"
                             sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}; fi"
