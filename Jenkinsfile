@@ -70,7 +70,7 @@ pipeline {
 
                 sh "Build number: ${env.BUILD_NUMBER}"
 
-                copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: lastSuccessful()
+                copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: specific('${BUILD_NUMBER}')
 
                 script {
                     def remote = [:]
