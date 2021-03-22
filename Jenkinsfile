@@ -6,7 +6,7 @@ pipeline {
     }
 
     options {
-        copyArtifactPermission('MUCK-Pimcore-Test')
+        copyArtifactPermission("${env.JOB_NAME}")
     }
 
     parameters {
@@ -66,7 +66,7 @@ pipeline {
         stage('Deploy') {
             steps {
 
-               copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: 'MUCK-Pimcore-Test', selector: lastSuccessful()
+               copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: lastSuccessful()
 
                 script {
                     def remote = [:]
