@@ -45,12 +45,11 @@ pipeline {
                 sh 'php bin/console cache:clear'
                 sh 'rm -rf .git/'
                 sh 'rm -rf var/cache'
+                sh "if [ -d 'build' ]; then rm -rf build; fi"
                 sh 'mkdir build'
                 sh "tar --exclude=build/artifact-${env.BUILD_NUMBER}.tar.gz -zcf build/artifact-${env.BUILD_NUMBER}.tar.gz ."
 
                 archiveArtifacts artifacts: "build/artifact-${env.BUILD_NUMBER}.tar.gz", followSymlinks: false, onlyIfSuccessful: true
-
-                sh "Build number: ${env.BUILD_NUMBER}"
             }
         }
 
@@ -62,10 +61,6 @@ pipeline {
 
         stage('Deploying') {
             steps {
-
-                sh "Build number: ${env.BUILD_NUMBER}"
-
-//                 copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: specific('${BUILD_NUMBER}')
 
                 script {
                     def remote = [:]
