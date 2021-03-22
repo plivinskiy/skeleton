@@ -107,28 +107,28 @@ pipeline {
 
                         stage("Prepare symlinks") {
                             // web/var
-                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/var"
-                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/web/var ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/var"
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/web/var"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/web/var ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/web/var"
 
                             // web/assets
-                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/assets"
-                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/web/assets ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/assets "
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/web/assets"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/web/assets ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/web/assets "
 
                             // var/logs
-                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/logs"
-                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/logs ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/logs"
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/logs"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/logs ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/logs"
 
                             // var/sessions
-                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/sessions"
-                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/sessions ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/sessions "
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/sessions"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/sessions ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/sessions "
 
                             // var/tmp
-                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/tmp"
-                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/tmp ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/tmp"
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/tmp"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/tmp ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/tmp"
 
                             // var/versions
-                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions"
-                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/versions ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions"
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/versions"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/shared/var/versions ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/versions"
 
                             sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/htdocs"
                             sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER} ${env.JK_REMOTE_DESTINATION}/htdocs"
