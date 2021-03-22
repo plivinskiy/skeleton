@@ -22,9 +22,9 @@ pipeline {
 
         choice(name: 'JK_ENV_NAME', choices: ['staging'], description: 'Environments name')
 
-        credentials(name: 'JK_SSH_CREDENTIAL', description: 'SSH Jenkins Private Key', defaultValue: 'JenkinsPrivateKey', credentialType: "Any", required: false )
+        credentials(name: 'JK_SSH_CREDENTIAL', description: 'SSH Jenkins Private Key', defaultValue: 'JenkinsPrivateKey', credentialType: "Any", required: true )
 
-        credentials(name: 'JK_GIT_CREDENTIAL', description: 'GIT Repository Credentials', defaultValue: 'gitea-tagwork', credentialType: "Any", required: false )
+        credentials(name: 'JK_GIT_CREDENTIAL', description: 'GIT Repository Credentials', defaultValue: 'gitea-tagwork', credentialType: "Any", required: true )
 
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', description: 'GIT Branch to build the project', name: 'JK_GIT_REFERENCE', type: 'PT_BRANCH'
     }
