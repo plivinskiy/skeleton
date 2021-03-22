@@ -11,13 +11,13 @@ pipeline {
 
     parameters {
 
-        choice(name: 'JK_SSH_HOST', choices: ['62.146.146.113'], description: 'Deploy Destination: Host', required: false)
+        choice(name: 'JK_SSH_HOST', choices: ['62.146.146.113'], description: 'Deploy Destination: Host')
 
-        choice(name: 'JK_REMOTE_DESTINATION', choices: ['/var/www/pimcore'], description: 'Deploy Destination: Directory', required: false)
+        choice(name: 'JK_REMOTE_DESTINATION', choices: ['/var/www/pimcore'], description: 'Deploy Destination: Directory')
 
-        choice(name: 'JK_SSH_USER', choices: ['t1admin'], description: 'Deploy Destination: User', required: true)
+        choice(name: 'JK_SSH_USER', choices: ['t1admin'], description: 'Deploy Destination: User')
 
-        choice(name: 'JK_ENV_NAME', choices: ['staging'], description: 'Environments name', required: true)
+        choice(name: 'JK_ENV_NAME', choices: ['staging'], description: 'Environments name')
 
         credentials(name: 'JK_SSH_CREDENTIAL', description: 'SSH Jenkins Private Key', defaultValue: 'JenkinsPrivateKey', credentialType: "Any", required: false )
 
