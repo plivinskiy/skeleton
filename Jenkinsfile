@@ -54,6 +54,8 @@ pipeline {
                 sh "tar --exclude=build/artifact-${env.BUILD_NUMBER}.tar.gz -zcf build/artifact-${env.BUILD_NUMBER}.tar.gz ."
 
                 archiveArtifacts artifacts: "build/artifact-${env.BUILD_NUMBER}.tar.gz", followSymlinks: false, onlyIfSuccessful: true
+
+                sh "Build number: ${env.BUILD_NUMBER}"
             }
         }
 
@@ -66,7 +68,9 @@ pipeline {
         stage('Deploying') {
             steps {
 
-               copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: lastSuccessful()
+                sh "Build number: ${env.BUILD_NUMBER}"
+
+                copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: lastSuccessful()
 
                 script {
                     def remote = [:]
