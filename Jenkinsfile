@@ -69,23 +69,22 @@ pipeline {
                     remote.user = "${env.JS_SSH_USER}"
                     remote.allowAnyHosts = true
 
-                    node {
-                        withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
-                            remote.identityFile = identity
-                            remote.passphrase = passphrase
+                    withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+                        remote.identityFile = identity
+                        remote.passphrase = passphrase
 
-                            stage("Copy to remote Artifacts Storage") {
-                                sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/artifacts; fi"
-                                sshPut remote: remote, from: 'build/artifact.tar.gz', into: "${env.JK_REMOTE_DESTINATION}/artifacts/artifact-${env.BUILD_NUMBER}.tar.gz"
-                                sshCommand remote: remote, command: "ls -la ${env.JK_REMOTE_DESTINATION}/artifacts"
-                                sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release; fi"
-                                sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}; fi"
-                                sshCommand remote: remote, command: "tar -zxf ${env.JK_REMOTE_DESTINATION}/artifacts/artifact-${env.BUILD_NUMBER}.tar.gz --directory ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}"
-                                sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/artifacts -maxdepth 1 -type f | xargs -x ls -t | awk 'NR>5' | xargs -L1 rm -rf"
-                                sshCommand remote: remote, command: "cp ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/config/system_${env.JK_ENV_NAME}.php ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/config/system.php "
-                            }
+                        stage("Copy to remote Artifacts Storage") {
+                            sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/artifacts; fi"
+                            sshPut remote: remote, from: 'build/artifact.tar.gz', into: "${env.JK_REMOTE_DESTINATION}/artifacts/artifact-${env.BUILD_NUMBER}.tar.gz"
+                            sshCommand remote: remote, command: "ls -la ${env.JK_REMOTE_DESTINATION}/artifacts"
+                            sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release; fi"
+                            sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}; fi"
+                            sshCommand remote: remote, command: "tar -zxf ${env.JK_REMOTE_DESTINATION}/artifacts/artifact-${env.BUILD_NUMBER}.tar.gz --directory ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}"
+                            sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/artifacts -maxdepth 1 -type f | xargs -x ls -t | awk 'NR>5' | xargs -L1 rm -rf"
+                            sshCommand remote: remote, command: "cp ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/config/system_${env.JK_ENV_NAME}.php ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/config/system.php "
                         }
                     }
+
                 }
 
             }
@@ -97,44 +96,43 @@ pipeline {
                 script {
                     def remote = [:]
                     remote.name = "Deploy Destination"
-                    remote.host = "${env.JS_SSH_HOST}"
-                    remote.user = "${env.JS_SSH_USER}"
+                    remote.host = "${env.JK_SSH_HOST}"
+                    remote.user = "${env.JK_SSH_USER}"
                     remote.allowAnyHosts = true
 
-                    node {
-                        withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
-                            remote.identityFile = identity
-                            remote.passphrase = passphrase
+                    withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+                        remote.identityFile = identity
+                        remote.passphrase = passphrase
 
-                            stage("Prepare symlinks") {
-                                // web/var
-                                sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/var"
-                                sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/var ${env.JK_REMOTE_DESTINATION}/shared/web/var"
+                        stage("Prepare symlinks") {
+                            // web/var
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/var"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/var ${env.JK_REMOTE_DESTINATION}/shared/web/var"
 
-                                // web/assets
-                                sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/assets"
-                                sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/assets ${env.JK_REMOTE_DESTINATION}/shared/web/assets"
+                            // web/assets
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/assets"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/web/assets ${env.JK_REMOTE_DESTINATION}/shared/web/assets"
 
-                                // var/logs
-                                sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/logs"
-                                sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/logs ${env.JK_REMOTE_DESTINATION}/shared/var/logs"
+                            // var/logs
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/logs"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/logs ${env.JK_REMOTE_DESTINATION}/shared/var/logs"
 
-                                // var/sessions
-                                sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/sessions"
-                                sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/sessions ${env.JK_REMOTE_DESTINATION}/shared/var/sessions"
+                            // var/sessions
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/sessions"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/sessions ${env.JK_REMOTE_DESTINATION}/shared/var/sessions"
 
-                                // var/tmp
-                                sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/tmp"
-                                sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/tmp ${env.JK_REMOTE_DESTINATION}/shared/var/tmp"
+                            // var/tmp
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/tmp"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/tmp ${env.JK_REMOTE_DESTINATION}/shared/var/tmp"
 
-                                // var/versions
-                                sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions"
-                                sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions ${env.JK_REMOTE_DESTINATION}/shared/var/versions"
+                            // var/versions
+                            sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions ${env.JK_REMOTE_DESTINATION}/shared/var/versions"
 
-                                sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}htdocs ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}"
-                            }
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}htdocs ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}"
                         }
                     }
+
                 }
 
 
