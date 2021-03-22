@@ -41,10 +41,10 @@ pipeline {
                     userRemoteConfigs: [[name: 'source', credentialsId:"${env.JK_GIT_CREDENTIAL}", url: "${env.GIT_URL}"]]
                 ])
 
-                sh 'composer install --optimize-autoloader --no-interaction'
-                sh 'php bin/console cache:clear'
+//                 sh 'composer install --optimize-autoloader --no-interaction'
+//                 sh 'php bin/console cache:clear'
                 sh 'rm -rf .git/'
-                sh 'rm -rf var/cache'
+//                 sh 'rm -rf var/cache'
                 sh "if [ -d 'build' ]; then rm -rf build; fi"
                 sh 'mkdir build'
                 sh "tar --exclude=build/artifact-${env.BUILD_NUMBER}.tar.gz -zcf build/artifact-${env.BUILD_NUMBER}.tar.gz ."
