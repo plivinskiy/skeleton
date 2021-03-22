@@ -22,6 +22,8 @@ pipeline {
 
         choice(name: 'JK_ENV_NAME', choices: ['staging'], description: 'Environments name')
 
+        choice(name: 'JK_KEEP_ARTIFACTS_COUNT', choices: ['5','10','15'], description: 'Keep X last successfully artifacts on the remove server')
+
         credentials(name: 'JK_SSH_CREDENTIAL', description: 'SSH Jenkins Private Key', defaultValue: 'JenkinsPrivateKey', credentialType: "Any", required: true )
 
         credentials(name: 'JK_GIT_CREDENTIAL', description: 'GIT Repository Credentials', defaultValue: 'gitea-tagwork', credentialType: "Any", required: true )
@@ -82,7 +84,6 @@ pipeline {
                             sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release; fi"
                             sshCommand remote: remote, command: "if [ ! -d '${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}' ]; then mkdir ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}; fi"
                             sshCommand remote: remote, command: "tar -zxf ${env.JK_REMOTE_DESTINATION}/artifacts/artifact-${env.BUILD_NUMBER}.tar.gz --directory ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}"
-                            sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/artifacts -maxdepth 1 -type f | xargs -x ls -t | awk 'NR>5' | xargs -L1 rm -rf"
                             sshCommand remote: remote, command: "cp ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/config/system_${env.JK_ENV_NAME}.php ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}/var/config/system.php "
                         }
                     }
@@ -133,6 +134,9 @@ pipeline {
 
                             sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}/htdocs"
                             sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER} ${env.JK_REMOTE_DESTINATION}/htdocs"
+
+                            sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/release -maxdepth 1 -type d | xargs -x ls -t | awk 'NR>${env.JK_KEEP_ARTIFACTS_COUNT}' | xargs -L1 rm -rf"
+                            sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/artifacts -maxdepth 1 -type f | xargs -x ls -t | awk 'NR>${env.JK_KEEP_ARTIFACTS_COUNT}' | xargs -L1 rm -rf"
                         }
                     }
 
