@@ -11,17 +11,17 @@ pipeline {
 
     parameters {
 
-        choice(name: 'JK_SSH_HOST', choices: ['62.146.146.113'], description: 'Deploy Destination: Host', required: true)
+        choice(name: 'JK_SSH_HOST', choices: ['62.146.146.113'], description: 'Deploy Destination: Host', required: false)
 
-        choice(name: 'JK_REMOTE_DESTINATION', choices: ['/var/www/pimcore'], description: 'Deploy Destination: Directory', required: true)
+        choice(name: 'JK_REMOTE_DESTINATION', choices: ['/var/www/pimcore'], description: 'Deploy Destination: Directory', required: false)
 
         choice(name: 'JK_SSH_USER', choices: ['t1admin'], description: 'Deploy Destination: User', required: true)
 
         choice(name: 'JK_ENV_NAME', choices: ['staging'], description: 'Environments name', required: true)
 
-        credentials(name: 'JK_SSH_CREDENTIAL', description: 'SSH Jenkins Private Key', defaultValue: 'JenkinsPrivateKey', credentialType: "Any", required: true )
+        credentials(name: 'JK_SSH_CREDENTIAL', description: 'SSH Jenkins Private Key', defaultValue: 'JenkinsPrivateKey', credentialType: "Any", required: false )
 
-        credentials(name: 'JK_GIT_CREDENTIAL', description: 'GIT Repository Credentials', defaultValue: 'gitea-tagwork', credentialType: "Any", required: true )
+        credentials(name: 'JK_GIT_CREDENTIAL', description: 'GIT Repository Credentials', defaultValue: 'gitea-tagwork', credentialType: "Any", required: false )
 
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', description: 'GIT Branch to build the project', name: 'JK_GIT_REFERENCE', type: 'PT_BRANCH'
     }
