@@ -70,8 +70,10 @@ pipeline {
                     remote.allowAnyHosts = true
 
                     sh "credentials: ${env.JK_SSH_CREDENTIAL}"
+                    sh "host: ${env.JS_SSH_HOST}"
+                    sh "user: ${env.JS_SSH_USER}"
 
-                    withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: "JenkinsPrivateKey", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
                         remote.identityFile = identity
                         remote.passphrase = passphrase
 
