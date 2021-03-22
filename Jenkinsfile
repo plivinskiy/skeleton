@@ -130,7 +130,7 @@ pipeline {
                             sshCommand remote: remote, command: "rm -rf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions"
                             sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}release/${env.BUILD_NUMBER}/var/versions ${env.JK_REMOTE_DESTINATION}/shared/var/versions"
 
-                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}htdocs ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}"
+                            sshCommand remote: remote, command: "ln -sf ${env.JK_REMOTE_DESTINATION}/htdocs ${env.JK_REMOTE_DESTINATION}/release/${env.BUILD_NUMBER}"
                         }
                     }
 
