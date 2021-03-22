@@ -146,5 +146,31 @@ pipeline {
             }
         }
 
+        stage('Cleaning'){
+            steps {
+
+                script {
+                    def remote = [:]
+                    remote.name = "Deploy Destination"
+                    remote.host = "${env.JK_SSH_HOST}"
+                    remote.user = "${env.JK_SSH_USER}"
+                    remote.allowAnyHosts = true
+
+                    withCredentials([sshUserPrivateKey(credentialsId: "${env.JK_SSH_CREDENTIAL}", keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+                        remote.identityFile = identity
+                        remote.passphrase = passphrase
+
+                        stage("Clean old artifacts") {
+                            sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/release -maxdepth 1 -type d | xargs -x ls -t | awk 'NR>${env.JK_KEEP_ARTIFACTS_COUNT}' | xargs -L1 rm -rf"
+                            sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/artifacts -maxdepth 1 -type f | xargs -x ls -t | awk 'NR>${env.JK_KEEP_ARTIFACTS_COUNT}' | xargs -L1 rm -rf"
+                        }
+                    }
+
+                }
+
+
+            }
+        }
+
     }
 }
