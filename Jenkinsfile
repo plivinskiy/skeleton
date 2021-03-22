@@ -1,7 +1,10 @@
 pipeline {
     agent {
-        node {
+        dockerfile {
+            filename 'Dockerfile'
+            dir 'docker/'
             label 'master'
+            args '-v /root/jenkins_home/.composer:/.composer'
         }
     }
 
@@ -29,14 +32,6 @@ pipeline {
     stages {
 
         stage('Building') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile'
-                    dir 'docker/'
-                    label 'master'
-                    args '-v /root/jenkins_home/.composer:/.composer'
-                }
-            }
 
             steps {
 
@@ -70,7 +65,7 @@ pipeline {
 
                 sh "Build number: ${env.BUILD_NUMBER}"
 
-                copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: specific('${BUILD_NUMBER}')
+//                 copyArtifacts filter: "build/artifact-${env.BUILD_NUMBER}.tar.gz", fingerprintArtifacts: true, projectName: "${env.JOB_NAME}", selector: specific('${BUILD_NUMBER}')
 
                 script {
                     def remote = [:]
