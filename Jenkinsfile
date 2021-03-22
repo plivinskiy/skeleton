@@ -51,7 +51,7 @@ pipeline {
                 sh 'rm -rf .git/'
                 sh 'rm -rf var/cache'
                 sh 'mkdir build'
-                sh 'tar --exclude=build/artifact-${env.BUILD_NUMBER}.tar.gz -zcf build/artifact-${env.BUILD_NUMBER}.tar.gz .'
+                sh "tar --exclude=build/artifact-${env.BUILD_NUMBER}.tar.gz -zcf build/artifact-${env.BUILD_NUMBER}.tar.gz ."
 
                 archiveArtifacts artifacts: "build/artifact-${env.BUILD_NUMBER}.tar.gz", followSymlinks: false, onlyIfSuccessful: true
             }
