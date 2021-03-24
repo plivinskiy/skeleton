@@ -43,10 +43,10 @@ pipeline {
                     userRemoteConfigs: [[name: 'source', credentialsId:"${env.JK_GIT_CREDENTIAL}", url: "${env.GIT_URL}"]]
                 ])
 
-                sh 'composer install --optimize-autoloader --no-interaction'
-                sh 'php bin/console cache:clear'
+//                 sh 'composer install --optimize-autoloader --no-interaction'
+//                 sh 'php bin/console cache:clear'
                 sh 'rm -rf .git/'
-                sh "touch release.${env.BUILD_NUMBER}.txt"
+                sh "touch release.${env.GIT_COMMIT}.txt"
                 sh 'rm -rf var/cache'
                 sh "if [ -d 'build' ]; then rm -rf build; fi"
                 sh 'mkdir build'
@@ -159,7 +159,9 @@ pipeline {
 
                         stage("Clean old artifacts") {
                             sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/artifacts -maxdepth 1 -type f | xargs -x ls -t | awk 'NR>${env.JK_KEEP_ARTIFACTS_COUNT}' | xargs -L1 rm -rf"
+                            sshCommand remote: remote, command: "ls -la ${env.JK_REMOTE_DESTINATION}/artifacts"
                             sshCommand remote: remote, command: "find ${env.JK_REMOTE_DESTINATION}/release -maxdepth 1 -type d -printf \"%T@ %p\n\" | sort -nr | awk 'NR > ${env.JK_KEEP_ARTIFACTS_COUNT}+1 {print \$2}' | xargs rm -rf"
+                            sshCommand remote: remote, command: "ls -la ${env.JK_REMOTE_DESTINATION}/release"
                         }
                     }
 
